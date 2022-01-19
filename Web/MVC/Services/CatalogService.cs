@@ -47,41 +47,30 @@ public class CatalogService : ICatalogService
     public async Task<IEnumerable<SelectListItem>> GetBrands()
     {
         await Task.Delay(300);
-        var list = new List<SelectListItem>
-        {
-            new SelectListItem()
-            {
-                Value = "0",
-                Text = "brand 1"
-            },
-            new SelectListItem()
-            {
-                Value = "1",
-                Text = "brand 2"
-            }
-        };
 
-        return list;
+        var result = await _httpClient.SendAsync<Brands, PaginatedBrandsRequest>($"{_settings.Value.CatalogUrl}/GetBrands",
+           HttpMethod.Post,
+           new PaginatedBrandsRequest()
+           {
+               PageIndex = 0,
+               PageSize = 10
+           });
+
+        return result.Data.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Brand });
     }
 
     public async Task<IEnumerable<SelectListItem>> GetTypes()
     {
         await Task.Delay(300);
-        var list = new List<SelectListItem>
-        {
-            new SelectListItem()
-            {
-                Value = "0",
-                Text = "type 1"
-            },
-            
-            new SelectListItem()
-            {
-                Value = "1",
-                Text = "type 2"
-            }
-        };
 
-        return list;
+        var result = await _httpClient.SendAsync<Types, PaginatedTypesRequest>($"{_settings.Value.CatalogUrl}/GetTypes",
+           HttpMethod.Post,
+           new PaginatedTypesRequest()
+           {
+               PageIndex = 0,
+               PageSize = 10
+           });
+
+        return result.Data.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Type });
     }
 }

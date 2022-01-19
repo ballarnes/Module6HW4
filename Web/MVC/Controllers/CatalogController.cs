@@ -30,6 +30,7 @@ public class CatalogController : Controller
             TotalItems = catalog.Count,
             TotalPages = (int)Math.Ceiling((decimal)catalog.Count / itemsPage.Value)
         };
+
         var vm = new IndexViewModel()
         {
             CatalogItems = catalog.Data,
